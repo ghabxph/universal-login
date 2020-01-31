@@ -1,12 +1,14 @@
 from flask import Flask, request, Response, jsonify
-from lib.util import check_essential_env
+from lib.util import essential_env_present, set_essential_env, validate_submitted_env
 from jwcrypto import jwt, jwk, jws
-from lib.mongo import db
-from lib.config import config
+# from lib.mongo import db
+# from lib.config import config
+import os
 import json
 import bcrypt
 import time
 import random
+import sys
 
 # Essential Instances
 app = Flask(__name__)
@@ -21,7 +23,7 @@ def assets():
     if os.path.commonprefix((os.path.realpath(asset), '/html/')) != '/html/':
         return Response('Asset not found.', mimetype='text/plain'), 404
 
-    with open('/html/%s' % asset) as asset_file:
+    with open(asset) as asset_file:
 
         # Returns JS
         if asset.endswith('.js'):
@@ -39,14 +41,19 @@ def assets():
 @app.route('/', methods=['GET'])
 def setup():
 
-    # Check all essential environment variable
-    if check_essential_env():
+    with open('/html/setup.html', 'r') as html_file:
+
+        # index.html file
+        html = html_file.read()
+
+        # Check all essential environment variable
+        if essential_env_present():
+
+            # Do nothing...
+            return 'Nothing to setup...', 200
 
         # Perform re-setup.
-        return ''
-
-    # Do nothing
-    return ''
+        return Response(html), 200
 
 
 # @status: Under development
@@ -54,12 +61,34 @@ def setup():
 def set_environment():
 
     # Check all essential environment variable
-    if check_essential_env():
+    if essential_env_present():
 
-        # Set environment set from Qq
+        # Do nothing..
         return ''
 
-    return ''
+    # Validates submitted values
+    validation = validate_submitted_env(request.values)
+
+    # Proceed if values are valid
+    if validation['valid'] is False:
+        return jsonify(validation)
+
+    # Sets essential env setting
+    set_essential_env({
+        "UL_DB_HOST": request.values.get('UL_DB_HOST'),
+        "UL_DB_USER": request.values.get('UL_DB_USER'),
+        "UL_DB_PASS": request.values.get('UL_DB_PASS'),
+        "UL_DB_NAME": request.values.get('UL_DB_NAME'),
+        "UL_TP_CHECK": request.values.get('UL_TP_CHECK'),
+        "UL_TP_URL": request.values.get('UL_TP_URL'),
+        "UL_TP_METHOD": request.values.get('UL_TP_METHOD'),
+        "UL_TP_USER_FIELD": request.values.get('UL_TP_USER_FIELD'),
+        "UL_TP_PASS_FIELD": request.values.get('UL_TP_PASS_FIELD'),
+        "UL_TP_OTHER_FIELDS": request.values.get('UL_TP_OTHER_FIELDS')
+    })
+
+    # Set environment from submitted form
+    return 'Environment setup is done!'
 
 #
 # @app.route('/login', methods=['POST'])
