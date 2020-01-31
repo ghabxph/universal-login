@@ -1,0 +1,53 @@
+.setup { }
+
+/** Page Title **/
+.setup h1.header { display:block; width:500px; margin:50px auto 0 auto }
+
+
+/** Page **/
+.setup .page { width:500px; margin:auto; padding:10px }
+
+
+.setup .page h2.header { }
+.setup .page p.header { }
+
+
+/** Input Boxes **/
+.setup .page div.inputs input[type=text],
+.setup .page div.inputs input[type=password],
+.setup .page div.inputs textarea
+{ display:block; border:1px solid #333; padding:15px; margin:0 0 15px 0; width:468px }
+.setup .page div.inputs textarea { height:200px; font-family:monospace }
+
+/** Activator (Checkbox) **/
+.setup .page div.inputs div.activator { margin:0 0 10px 0 }
+
+
+/** Next Button - a.button / button element **/
+.setup .page div.next-button a.button,
+.setup .page div.next-button button
+{ display:inline-block; background:none; cursor:pointer; padding:10px; border-radius:5px; border:2px solid #333; color:#333; text-decoration:none;  }
+
+/** Next Button - a.button / button element (on hover) **/
+.setup .page div.next-button a.button:hover,
+.setup .page div.next-button button:hover
+{ border: 2px solid #666; color:#666 }
+
+
+/** UL Status (pending) **/
+.setup .page ul.status li.pending { list-style-type: none; color:#b9b9b9 }
+.setup .page ul.status li.pending:before { display:inline-block; content:'•'; width:15px; color:#b9b9b9; font-weight:bold; font-size:18px }
+
+/** UL Status (in-progress) **/
+.setup .page ul.status li.in-progress { list-style-type: none; color:#dcb415 }
+.setup .page ul.status li.in-progress:before { display:inline-block; content:'•'; width:15px; color:#dcb415; font-weight:bold; font-size:18px }
+
+
+/** UL Status (success) **/
+.setup .page ul.status li.success { list-style-type: none; color:green; font-weight:bold }
+.setup .page ul.status li.success:before { display:inline-block; content:'✓ '; width:20px; color:#0bb30b; font-weight:bold; font-size:18px }
+
+
+/** Helpers **/
+.clearfix { clear:both }
+.right { float:right }
