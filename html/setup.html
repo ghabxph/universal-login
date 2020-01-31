@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Universal Login - First Time Setup</title>
+    <link rel="stylesheet" href="/assets?file=global.css">
+</head>
+<body class="setup">
+<form method="POST">
+
+    <!-- Page -->
+    <div class="page">
+
+        <!-- Header -->
+        <h1 class="header">Database Information</h1>
+
+        <!-- Caption -->
+        <p class="caption">
+            In order for this server to be functional, we need to
+            fill in the database information required
+        </p>
+
+        <!-- Inputs -->
+        <div class="inputs">
+            <input type="text" name="UL_DB_HOST" placeholder="MongoDB Hostname"/>
+            <input type="text" name="UL_DB_USER" placeholder="MongoDB Username"/>
+            <input type="text" name="UL_DB_PASS" placeholder="MongoDB Password"/>
+            <input type="text" name="UL_DB_NAME" placeholder="MongoDB Database Name"/>
+        </div>
+
+        <!-- Next Button -->
+        <div class="next-button">
+            <a href="#" class="button">Next >></a>
+        </div>
+    </div>
+
+    <!-- Page -->
+    <div class="page">
+
+        <!-- Header -->
+        <h1 class="header">Third Party Check</h1>
+
+        <!-- Caption -->
+        <p class="caption">
+            Do you have third party authentication server to consult
+            at? Specify it here
+        </p>
+
+        <!-- Inputs -->
+        <div class="inputs">
+            <div class="activator">
+                <input type="checkbox" name="UL_TP_CHECK"/> Activate third party login check?
+            </div>
+            <div class="activator-toactivate">
+                <input type="text" name="UL_TP_URL" placeholder="API URL"/>
+                <input type="text" name="UL_TP_METHOD" placeholder="Method" value="POST" disabled/>
+                <input type="text" name="UL_TP_USER_FIELD" placeholder="Username field name"/>
+                <input type="text" name="UL_TP_PASS_FIELD" placeholder="Password field name"/>
+                <textarea name="UL_TP_OTHER_FIELDS"></textarea>
+            </div>
+        </div>
+
+        <!-- Next Button (For submit) -->
+        <div class="next-button">
+
+            <!-- Submits the button, when user pressed it. -->
+            <button>Submit</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>
