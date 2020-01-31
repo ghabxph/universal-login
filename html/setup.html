@@ -2,17 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Universal Login - First Time Setup</title>
+    <title>GhabXPH's - Universal Login - First Time Setup</title>
+
+    <!-- Normalize.css -->
+    <link rel="stylesheet" href="/assets?file=lib/css/normalize.min.css">
+
+    <!-- Global page style -->
     <link rel="stylesheet" href="/assets?file=global.css">
 </head>
 <body class="setup">
 <form method="POST">
 
-    <!-- Page -->
+    <!-- Page Title -->
+    <h1 class="header">First time setup</h1>
+
+    <!-- First page -->
+    <!-- Page that collects "database" information (mongodb credentials) -->
     <div class="page">
 
         <!-- Header -->
-        <h1 class="header">Database Information</h1>
+        <h2 class="header">Database Information</h2>
 
         <!-- Caption -->
         <p class="caption">
@@ -24,21 +33,28 @@
         <div class="inputs">
             <input type="text" name="UL_DB_HOST" placeholder="MongoDB Hostname"/>
             <input type="text" name="UL_DB_USER" placeholder="MongoDB Username"/>
-            <input type="text" name="UL_DB_PASS" placeholder="MongoDB Password"/>
+            <input type="password" name="UL_DB_PASS" placeholder="MongoDB Password"/>
             <input type="text" name="UL_DB_NAME" placeholder="MongoDB Database Name"/>
         </div>
 
         <!-- Next Button -->
         <div class="next-button">
-            <a href="#" class="button">Next >></a>
+
+            <!-- a.button -->
+            <a href="#" class="button right">Next &gt;&gt;</a>
+
+            <!-- Just a clearfix -->
+            <div class="clearfix"></div>
+
         </div>
     </div>
 
-    <!-- Page -->
-    <div class="page">
+    <!-- Second page -->
+    <!-- Page that collects third party auth server info -->
+    <div class="page" hidden>
 
         <!-- Header -->
-        <h1 class="header">Third Party Check</h1>
+        <h2 class="header">Third Party Check</h2>
 
         <!-- Caption -->
         <p class="caption">
@@ -49,14 +65,26 @@
         <!-- Inputs -->
         <div class="inputs">
             <div class="activator">
-                <input type="checkbox" name="UL_TP_CHECK"/> Activate third party login check?
+                <!-- Default checkbox value -->
+                <input type="hidden" name="UL_TP_CHECK" value="false"/>
+
+                <!-- Checkbox -->
+                <label><input type="checkbox" name="UL_TP_CHECK" value="true"/> Activate third party login check?</label>
             </div>
             <div class="activator-toactivate">
-                <input type="text" name="UL_TP_URL" placeholder="API URL"/>
-                <input type="text" name="UL_TP_METHOD" placeholder="Method" value="POST" disabled/>
-                <input type="text" name="UL_TP_USER_FIELD" placeholder="Username field name"/>
-                <input type="text" name="UL_TP_PASS_FIELD" placeholder="Password field name"/>
-                <textarea name="UL_TP_OTHER_FIELDS"></textarea>
+                <!-- Form values, in case fields are disabled -->
+                <input type="hidden" name="UL_TP_URL"/>
+                <input type="hidden" name="UL_TP_METHOD" value="POST"/>
+                <input type="hidden" name="UL_TP_USER_FIELD"/>
+                <input type="hidden" name="UL_TP_PASS_FIELD"/>
+                <input type="hidden" name="UL_TP_OTHER_FIELDS"/>
+
+                <!-- Typeable fields -->
+                <input type="text" name="UL_TP_URL" placeholder="API URL" disabled/>
+                <input type="text" name="UL_TP_METHOD" placeholder="Method (POST, for now)" disabled/>
+                <input type="text" name="UL_TP_USER_FIELD" placeholder="Username field name" disabled/>
+                <input type="text" name="UL_TP_PASS_FIELD" placeholder="Password field name"disabled/>
+                <textarea name="UL_TP_OTHER_FIELDS" placeholder="Other fields" disabled></textarea>
             </div>
         </div>
 
@@ -64,9 +92,38 @@
         <div class="next-button">
 
             <!-- Submits the button, when user pressed it. -->
-            <button>Submit</button>
+            <button class="right">Test and Submit &gt;&gt;</button>
+
+            <!-- Just a clearfix -->
+            <div class="clearfix"></div>
         </div>
     </div>
+
+    <!-- Third page -->
+    <!-- Performs test on given parameters, before saving the values to server's environment -->
+    <div class="page" hidden>
+
+        <!-- Header -->
+        <h2 class="header">Testing connection</h2>
+
+        <!-- Caption -->
+        <p class="caption">
+            Before we submit this form, we'll test the connections first...
+        </p>
+
+        <!-- Status items-->
+        <ul class="status">
+            <li class="pending">Testing MongoDB Connection</li>
+            <li class="pending">Testing Third-Party Login Server (connectivity / test curl)</li>
+        </ul>
+
+        <p class="message success" hidden>No issues! Form will now submit.</p>
+        <p class="message fail" hidden>Please check the above issues. Form will not submit.</p>
+    </div>
+
 </form>
+
+<script src="/assets?file=lib/js/jquery-3.4.1.min.js"></script>
+<script src="/assets?file=global.js"></script>
 </body>
 </html>
