@@ -9,13 +9,15 @@ from lib.util import validate_submitted_env
 from pymongo import MongoClient as mongo_client
 from pymongo.errors import ServerSelectionTimeoutError
 from pymongo.errors import OperationFailure
+from requests.exceptions import ConnectionError
 from jwcrypto import jwt, jwk, jws
 # from lib.config import config
 import os
 import json
+import random
+import requests
 import bcrypt
 import time
-import random
 import sys
 
 # Essential Instances
@@ -153,3 +155,27 @@ def setup_verify_mongodbadminpower():
             "type": "success",
             "msg": "rolesInfo command failed. We assume that user doesn't have root privilege."
         }), mimetype='application/json'), 403
+
+
+@app.route('/setup/verify/third_party_auth', methods=['POST'])
+def setup_verify_tpauth():
+    if request.values.get('UL_TP_REQUEST_FORMAT') is None or request.values.get('UL_TP_REQUEST_FORMAT') == '':
+        data = {
+            'username': '$username',
+            'password': '$password'
+        }
+    else:
+        data = json.loads(request.values.get('UL_TP_REQUEST_FORMAT'))
+
+    try:
+        res = requests.post(request.values.get('UL_TP_URL'), data=data)
+        return Response(json.dumps({
+            "type": "success",
+            "msg": "Request has been successfully posted.",
+            "res.text": res.text
+        })), 200
+    except:
+        return Response(json.dumps({
+            "type": "error",
+            "msg": "Connection error. Host either unresolvable, or cannot be reach."
+        })), 403
