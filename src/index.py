@@ -8,6 +8,7 @@ from lib.util import set_essential_env
 from lib.util import validate_submitted_env
 from pymongo import MongoClient as mongo_client
 from pymongo.errors import ServerSelectionTimeoutError
+from pymongo.errors import OperationFailure
 from jwcrypto import jwt, jwk, jws
 # from lib.config import config
 import os
@@ -110,6 +111,26 @@ def setup_verify_mongodb():
     except ServerSelectionTimeoutError:
         return Response('{"type":"error", "msg":"Unable to connect to mongodb host. Are you sure that the hostname is reachable?"}', mimetype='application/json'), 403
 
+
+@app.route('/setup/verify/mongodb_admin_user', methods=['POST'])
+def setup_verify_mongodbadminuser():
+    client = mongo_client(
+        host=request.values.get('UL_DB_HOST'),
+        username=request.values.get('UL_DB_ROOT_USER'),
+        password=request.values.get('UL_DB_ROOT_PASS'),
+        serverSelectionTimeoutMS=500
+    )
+    try:
+        return Response(json.dumps({
+            "type": "success",
+            "msg": "Test list_database operation is successful.",
+            "list_databases": client.list_database_names()
+        }), mimetype="application/json"), 200
+    except OperationFailure:
+        return Response(json.dumps({
+            "type": "error",
+            "msg": "MongoDB username and/or password may be invalid. Unable to perform list_database_names operation."
+        }), mimetype='application/json'), 403
 
 #
 # @app.route('/login', methods=['POST'])
