@@ -9,7 +9,6 @@ from lib.util import validate_submitted_env
 from pymongo import MongoClient as mongo_client
 from pymongo.errors import ServerSelectionTimeoutError
 from jwcrypto import jwt, jwk, jws
-# from lib.mongo import db
 # from lib.config import config
 import os
 import json
@@ -57,8 +56,8 @@ def setup():
         # Check all essential environment variable
         if essential_env_present():
 
-            # Do nothing...
-            return 'Nothing to setup...', 200
+            # Perform URL redirection (to /login)
+            return redirect('/login')
 
         # Perform re-setup.
         return Response(html), 200
@@ -97,6 +96,20 @@ def set_environment():
 
     # Set environment from submitted form
     return 'Environment setup is done!'
+
+
+@app.route('/setup/verify/mongodb', methods=['POST'])
+def setup_verify_mongodb():
+    client = mongo_client(host=request.values.get('UL_DB_HOST'), serverSelectionTimeoutMS=5000)
+    try:
+        return Response(json.dumps({
+            "type": "success",
+            "msg": "Connection to mongodb host is successful.",
+            "server_info": client.server_info()
+        }, indent=4), mimetype='application/json'), 200
+    except ServerSelectionTimeoutError:
+        return Response('{"type":"error", "msg":"Unable to connect to mongodb host. Are you sure that the hostname is reachable?"}', mimetype='application/json'), 403
+
 
 #
 # @app.route('/login', methods=['POST'])
