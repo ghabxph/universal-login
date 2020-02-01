@@ -67,9 +67,12 @@ $(function() {
                 test_mongo_connection();
 
                 // Step 2. Test mongo admin power
-                test_mongo_admin();
+                test_mongo_admin_user();
 
-                // Step 3. Test third party auth
+                // Step 3. Test mongo admin power
+                test_mongo_admin_power();
+
+                // Step 4. Test third party auth
                 test_third_party_auth();
 
                 function test_mongo_connection() {
@@ -94,13 +97,13 @@ $(function() {
                     });
                 }
 
-                function test_mongo_admin() {
+                function test_mongo_admin_user() {
 
                     // Sets status to in-progress (mongodb)
                     $(vr_status_item[1]).removeClass('pending');
                     $(vr_status_item[1]).addClass('in-progress');
                     // Test MongoDB Admin Powers
-                    $.post('/setup/verify/mongodb_admin', {
+                    $.post('/setup/verify/mongodb_admin_user', {
                         'UL_DB_HOST': $(mg_textbox[0]).val(),
                         'UL_DB_ROOT_USER': $(mg_textbox[1]).val(),
                         'UL_DB_ROOT_PASS': $(mg_textbox[2]).val()
@@ -117,14 +120,37 @@ $(function() {
                     });
                 }
 
+                function test_mongo_admin_power() {
+
+                    // Sets status to in-progress (mongodb)
+                    $(vr_status_item[2]).removeClass('pending');
+                    $(vr_status_item[2]).addClass('in-progress');
+                    // Test MongoDB Admin Powers
+                    $.post('/setup/verify/mongodb_admin_power', {
+                        'UL_DB_HOST': $(mg_textbox[0]).val(),
+                        'UL_DB_ROOT_USER': $(mg_textbox[1]).val(),
+                        'UL_DB_ROOT_PASS': $(mg_textbox[2]).val()
+                    }, function() {
+
+                        // Implies successful request
+                        $(vr_status_item[2]).removeClass('in-progress');
+                        $(vr_status_item[2]).addClass('success');
+                    }).fail(function() {
+
+                        // Implies failed request
+                        $(vr_status_item[2]).removeClass('in-progress');
+                        $(vr_status_item[2]).addClass('fail');
+                    });
+                }
+
                 function test_third_party_auth() {
 
                     // Check if third party auth option is checked
                     if (tp_checkbox.prop('checked')) {
 
                         // Sets status to in-progress (third-party auth)
-                        $(vr_status_item[2]).removeClass('pending');
-                        $(vr_status_item[2]).addClass('in-progress');
+                        $(vr_status_item[3]).removeClass('pending');
+                        $(vr_status_item[3]).addClass('in-progress');
 
                         // Tests third party auth
                         $.post('/setup/verify/third_party_auth', {
@@ -134,20 +160,20 @@ $(function() {
                         }, function() {
 
                             // Implies successful request
-                            $(vr_status_item[2]).removeClass('in-progress');
-                            $(vr_status_item[2]).addClass('success');
+                            $(vr_status_item[3]).removeClass('in-progress');
+                            $(vr_status_item[3]).addClass('success');
                         }).fail(function() {
 
                             // Implies failed request
-                            $(vr_status_item[2]).removeClass('in-progress');
-                            $(vr_status_item[2]).addClass('fail');
+                            $(vr_status_item[3]).removeClass('in-progress');
+                            $(vr_status_item[3]).addClass('fail');
                         });
 
                     } else {
 
                         // Implies no action (because disabled)
-                        $(vr_status_item[2]).removeClass('pending');
-                        $(vr_status_item[2]).addClass('wont-do');
+                        $(vr_status_item[3]).removeClass('pending');
+                        $(vr_status_item[3]).addClass('wont-do');
                     }
                 }
             }, 500);
