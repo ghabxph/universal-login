@@ -127,7 +127,7 @@ $(function() {
                         $(vr_status_item[2]).addClass('in-progress');
 
                         // Tests third party auth
-                        $.post('/setup/verify/third-party-auth', {
+                        $.post('/setup/verify/third_party_auth', {
                             'UL_TP_CHECK': tp_checkbox.val(),
                             'UL_TP_URL': $(tp_textbox[0]).val(),
                             'UL_TP_REQUEST_FORMAT': $(tp_textbox[1]).val()
