@@ -32,16 +32,16 @@
         <!-- Inputs -->
         <div class="inputs">
             <input type="text" name="UL_DB_HOST" placeholder="MongoDB Hostname"/>
-            <input type="text" name="UL_DB_USER" placeholder="MongoDB Username"/>
-            <input type="password" name="UL_DB_PASS" placeholder="MongoDB Password"/>
-            <input type="text" name="UL_DB_NAME" placeholder="MongoDB Database Name"/>
+    <input type="text" name="UL_DB_ROOT_USER" placeholder="MongoDB Username"/>
+            <input type="password" name="UL_DB_ROOT_PASS" placeholder="MongoDB Password"/>
+            <input type="text" name="UL_DB_NAME_PREFIX" placeholder="MongoDB Database Name Prefix"/>
         </div>
 
         <!-- Next Button -->
         <div class="next-button">
 
-            <!-- a.button -->
-            <a href="#" class="button right">Next &gt;&gt;</a>
+            <!-- Submits the button, when user pressed it. -->
+            <button class="right">Next &gt;&gt;</button>
 
             <!-- Just a clearfix -->
             <div class="clearfix"></div>
@@ -74,17 +74,11 @@
             <div class="activator-toactivate">
                 <!-- Form values, in case fields are disabled -->
                 <input type="hidden" name="UL_TP_URL"/>
-                <input type="hidden" name="UL_TP_METHOD" value="POST"/>
-                <input type="hidden" name="UL_TP_USER_FIELD"/>
-                <input type="hidden" name="UL_TP_PASS_FIELD"/>
-                <input type="hidden" name="UL_TP_OTHER_FIELDS"/>
+                <input type="hidden" name="UL_TP_REQUEST_FORMAT"/>
 
                 <!-- Typeable fields -->
                 <input type="text" name="UL_TP_URL" placeholder="API URL" disabled/>
-                <input type="text" name="UL_TP_METHOD" placeholder="Method (POST, for now)" disabled/>
-                <input type="text" name="UL_TP_USER_FIELD" placeholder="Username field name" disabled/>
-                <input type="text" name="UL_TP_PASS_FIELD" placeholder="Password field name"disabled/>
-                <textarea name="UL_TP_OTHER_FIELDS" placeholder="Other fields" disabled></textarea>
+                <textarea name="UL_TP_REQUEST_FORMAT" placeholder="Request format" disabled></textarea>
             </div>
         </div>
 
@@ -114,6 +108,7 @@
         <!-- Status items-->
         <ul class="status">
             <li class="pending">Testing MongoDB Connection</li>
+            <li class="pending">Testing MongoDB Admin Power</li>
             <li class="pending">Testing Third-Party Login Server (connectivity / test curl)</li>
         </ul>
 
