@@ -42,6 +42,13 @@
 .setup .page ul.status li.in-progress { list-style-type: none; color:#dcb415 }
 .setup .page ul.status li.in-progress:before { display:inline-block; content:'•'; width:15px; color:#dcb415; font-weight:bold; font-size:18px }
 
+/** UL Status (wont-do) **/
+.setup .page ul.status li.wont-do { list-style-type: none; color:#a0a0a0 }
+.setup .page ul.status li.wont-do:before { display:inline-block; content:'x'; width:15px; color:#a0a0a0; font-weight:bold; font-size:18px }
+
+/** UL Status (fail) **/
+.setup .page ul.status li.fail { list-style-type: none; color:#f00 }
+.setup .page ul.status li.fail:before { display:inline-block; content:'x'; width:15px; color:#f00; font-weight:bold; font-size:18px }
 
 /** UL Status (success) **/
 .setup .page ul.status li.success { list-style-type: none; color:green; font-weight:bold }
