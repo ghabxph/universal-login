@@ -14,11 +14,6 @@ $(function() {
     let vr_page = $('body > form > div:nth-child(4)');
     let vr_status_item = $('body > form > div:nth-child(4) > ul > li');
 
-    $('.setup > form > div:nth-child(2) > div.next-button > a').click(function() {
-        mg_page.attr('hidden', '');
-        tp_page.removeAttr('hidden');
-    });
-
     tp_checkbox.change(function() {
 
         // Check if checkbox is checked
@@ -38,75 +33,127 @@ $(function() {
 
     });
 
+    let page = 1;
+
     form.submit(function(e) {
 
-        // Initial test states (boolean)
-        let successful_mongodb_test = false;
-        let successful_third_party_auth_test = false;
+        // Increment page by 1
+        page++;
 
-        // Prevents form submission
-        e.preventDefault();
+        function page_2() {
 
-        // Displays the third page
-        tp_page.attr('hidden', '');
-        vr_page.removeAttr('hidden');
+            // Prevent form submission
+            e.preventDefault();
+            mg_page.attr('hidden', '');
+            tp_page.removeAttr('hidden');
+        }
 
-        setTimeout(function() {
+        function page_3() {
 
-            // Sets status to in-progress (mongodb)
-            $(vr_status_item[0]).removeClass('pending');
-            $(vr_status_item[0]).addClass('in-progress');
+            // Prevent form submission
+            e.preventDefault();
 
-            // Test MongoDB
-            $.post('/setup/verify/mongodb', {
-                'UL_DB_HOST': $(mg_textbox[0]).val(),
-                'UL_DB_USER': $(mg_textbox[1]).val(),
-                'UL_DB_PASS': $(mg_textbox[2]).val(),
-                'UL_DB_NAME': $(mg_textbox[3]).val()
-            }, function() {
+            // Initial test states (boolean)
+            let successful_mongodb_test = false;
+            let successful_third_party_auth_test = false;
 
-                // Implies successful request
-                $(vr_status_item[0]).addClass('in-progress');
-                $(vr_status_item[0]).addClass('success');
-            }).fail(function() {
+            // Displays the third page
+            tp_page.attr('hidden', '');
+            vr_page.removeAttr('hidden');
 
-                // Implies failed request
-                $(vr_status_item[0]).addClass('in-progress');
-                $(vr_status_item[0]).addClass('fail');
-            });
+            setTimeout(function() {
 
-            // Check if third party auth option is checked
-            if (tp_checkbox.prop('checked')) {
+                // Step 1. Test mongo connection
+                test_mongo_connection();
 
-                // Sets status to in-progress (third-party auth)
-                $(vr_status_item[1]).removeClass('pending');
-                $(vr_status_item[1]).addClass('in-progress');
-                // Tests third party auth
-                $.post('/setup/verify/third-party-auth', {
-                    'UL_TP_CHECK': tp_checkbox.value(),
-                    'UL_TP_URL': $(mg_textbox[0]).val(),
-                    'UL_TP_METHOD': $(mg_textbox[1]).val(),
-                    'UL_TP_USER_FIELD': $(mg_textbox[2]).val(),
-                    'UL_TP_PASS_FIELD': $(mg_textbox[3]).val(),
-                    'UL_TP_OTHER_FIELDS': $(mg_textbox[4]).val()
-                }, function() {
+                // Step 2. Test mongo admin power
+                test_mongo_admin();
 
-                    // Implies successful request
+                // Step 3. Test third party auth
+                test_third_party_auth();
+
+                function test_mongo_connection() {
+
+                    // Sets status to in-progress (mongodb)
+                    $(vr_status_item[0]).removeClass('pending');
+                    $(vr_status_item[0]).addClass('in-progress');
+
+                    // Test MongoDB Connection
+                    $.post('/setup/verify/mongodb', {
+                        'UL_DB_HOST': $(mg_textbox[0]).val()
+                    }, function() {
+
+                        // Implies successful request
+                        $(vr_status_item[0]).removeClass('in-progress');
+                        $(vr_status_item[0]).addClass('success');
+                    }).fail(function() {
+
+                        // Implies failed request
+                        $(vr_status_item[0]).removeClass('in-progress');
+                        $(vr_status_item[0]).addClass('fail');
+                    });
+                }
+
+                function test_mongo_admin() {
+
+                    // Sets status to in-progress (mongodb)
+                    $(vr_status_item[1]).removeClass('pending');
                     $(vr_status_item[1]).addClass('in-progress');
-                    $(vr_status_item[1]).addClass('success');
+                    // Test MongoDB Admin Powers
+                    $.post('/setup/verify/mongodb_admin', {
+                        'UL_DB_HOST': $(mg_textbox[0]).val(),
+                        'UL_DB_ROOT_USER': $(mg_textbox[1]).val(),
+                        'UL_DB_ROOT_PASS': $(mg_textbox[2]).val()
+                    }, function() {
 
-                }).fail(function() {
+                        // Implies successful request
+                        $(vr_status_item[1]).removeClass('in-progress');
+                        $(vr_status_item[1]).addClass('success');
+                    }).fail(function() {
 
-                    // Implies failed request
-                    $(vr_status_item[1]).addClass('in-progress');
-                    $(vr_status_item[1]).addClass('fail');
-                });
-            } else {
+                        // Implies failed request
+                        $(vr_status_item[1]).removeClass('in-progress');
+                        $(vr_status_item[1]).addClass('fail');
+                    });
+                }
 
-                // Implies no action (because disabled)
-                $(vr_status_item[1]).removeClass('pending');
-                $(vr_status_item[1]).addClass('wont-do');
-            }
-        }, 500);
+                function test_third_party_auth() {
+
+                    // Check if third party auth option is checked
+                    if (tp_checkbox.prop('checked')) {
+
+                        // Sets status to in-progress (third-party auth)
+                        $(vr_status_item[2]).removeClass('pending');
+                        $(vr_status_item[2]).addClass('in-progress');
+
+                        // Tests third party auth
+                        $.post('/setup/verify/third-party-auth', {
+                            'UL_TP_CHECK': tp_checkbox.val(),
+                            'UL_TP_URL': $(tp_textbox[0]).val(),
+                            'UL_TP_REQUEST_FORMAT': $(tp_textbox[1]).val()
+                        }, function() {
+
+                            // Implies successful request
+                            $(vr_status_item[2]).removeClass('in-progress');
+                            $(vr_status_item[2]).addClass('success');
+                        }).fail(function() {
+
+                            // Implies failed request
+                            $(vr_status_item[2]).removeClass('in-progress');
+                            $(vr_status_item[2]).addClass('fail');
+                        });
+
+                    } else {
+
+                        // Implies no action (because disabled)
+                        $(vr_status_item[2]).removeClass('pending');
+                        $(vr_status_item[2]).addClass('wont-do');
+                    }
+                }
+            }, 500);
+        }
+
+        if (page === 2) page_2();
+        else if (page === 3) page_3();
     });
 });
