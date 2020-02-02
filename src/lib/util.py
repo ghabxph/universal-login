@@ -1,5 +1,5 @@
 import os
-
+import random
 
 def essential_env_present():
     return os.environ.get('UL_DB_HOST') is not None and \
@@ -9,3 +9,7 @@ def essential_env_present():
             os.environ.get('UL_TP_CHECK') is not None and \
             os.environ.get('UL_TP_URL') is not None and \
             os.environ.get('UL_TP_REQUEST_FORMAT') is not None
+
+
+def random_str(n):
+    return ''.join(random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') for i in range(n))
