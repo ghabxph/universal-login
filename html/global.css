@@ -55,6 +55,19 @@
 .setup .page ul.status li.success:before { display:inline-block; content:'✓ '; width:20px; color:#0bb30b; font-weight:bold; font-size:18px }
 
 
+/** Page message success **/
+.setup .page .message.success { margin:80px 0 0 0; background:#fff2c0; padding:20px; border-radius:20px }
+.setup .page .message.success h3:before { display:inline-block; content:'✓ '; width:20px; color:#0bb30b; font-weight:bold; font-size:18px }
+.setup .page .message.success h3 { color:#080 }
+.setup .page .message.success p { font-style:italic }
+
+/** Page message fail **/
+.setup .page .message.fail { margin:80px 0 0 0; background:#fff2c0; padding:20px; border-radius:20px }
+.setup .page .message.fail h3:before { display:inline-block; content:'x'; width:15px; color:#f00; font-weight:bold; font-size:18px }
+.setup .page .message.fail h3 { color:#f00 }
+.setup .page .message.fail p { font-style:italic }
+
+
 /** Helpers **/
 .clearfix { clear:both }
 .right { float:right }
