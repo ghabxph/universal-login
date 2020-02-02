@@ -22,19 +22,6 @@ import sys
 app = Flask(__name__)
 
 
-@app.route('/login', methods=['GET'])
-def login():
-
-    # Check all essential environment variable
-    if not essential_env_present():
-
-        # Redirects to setup page
-        return redirect('/')
-
-    with open('/html/login.html', 'r') as html:
-        return html.read()
-
-
 @app.route('/assets')
 def assets():
     asset = '/html/%s' % request.values.get('file')
@@ -235,3 +222,16 @@ def setup_get_environment():
             "UL_TP_REQUEST_FORMAT": os.environ.get('UL_TP_REQUEST_FORMAT')
         }
     }), mimetype='application/json'), 200
+
+
+@app.route('/login', methods=['GET'])
+def login():
+
+    # Check all essential environment variable
+    if not essential_env_present():
+
+        # Redirects to setup page
+        return redirect('/')
+
+    with open('/html/login.html', 'r') as html:
+        return html.read()
