@@ -63,6 +63,9 @@ $(function() {
 
             setTimeout(function() {
 
+                let test_count = 0;
+                let test_success = 0;
+
                 // Step 1. Test mongo connection
                 test_mongo_connection();
 
@@ -86,6 +89,9 @@ $(function() {
                         'UL_DB_HOST': $(mg_textbox[0]).val()
                     }, function() {
 
+                        // Increment number of successful test
+                        test_success++;
+
                         // Implies successful request
                         $(vr_status_item[0]).removeClass('in-progress');
                         $(vr_status_item[0]).addClass('success');
@@ -94,6 +100,13 @@ $(function() {
                         // Implies failed request
                         $(vr_status_item[0]).removeClass('in-progress');
                         $(vr_status_item[0]).addClass('fail');
+                    }).always(function() {
+
+                        // Increment number of test
+                        test_count++;
+
+                        // Check if test is done
+                        check_if_test_is_done();
                     });
                 }
 
@@ -109,6 +122,9 @@ $(function() {
                         'UL_DB_ROOT_PASS': $(mg_textbox[2]).val()
                     }, function() {
 
+                        // Increment number of successful test
+                        test_success++;
+
                         // Implies successful request
                         $(vr_status_item[1]).removeClass('in-progress');
                         $(vr_status_item[1]).addClass('success');
@@ -117,6 +133,13 @@ $(function() {
                         // Implies failed request
                         $(vr_status_item[1]).removeClass('in-progress');
                         $(vr_status_item[1]).addClass('fail');
+                    }).always(function() {
+
+                        // Increment number of test
+                        test_count++;
+
+                        // Check if test is done
+                        check_if_test_is_done();
                     });
                 }
 
@@ -132,6 +155,9 @@ $(function() {
                         'UL_DB_ROOT_PASS': $(mg_textbox[2]).val()
                     }, function() {
 
+                        // Increment number of successful test
+                        test_success++;
+
                         // Implies successful request
                         $(vr_status_item[2]).removeClass('in-progress');
                         $(vr_status_item[2]).addClass('success');
@@ -140,6 +166,13 @@ $(function() {
                         // Implies failed request
                         $(vr_status_item[2]).removeClass('in-progress');
                         $(vr_status_item[2]).addClass('fail');
+                    }).always(function() {
+
+                        // Increment number of test
+                        test_count++;
+
+                        // Check if test is done
+                        check_if_test_is_done();
                     });
                 }
 
@@ -159,6 +192,9 @@ $(function() {
                             'UL_TP_REQUEST_FORMAT': $(tp_textbox[1]).val()
                         }, function() {
 
+                            // Increment number of successful test
+                            test_success++;
+
                             // Implies successful request
                             $(vr_status_item[3]).removeClass('in-progress');
                             $(vr_status_item[3]).addClass('success');
@@ -167,6 +203,13 @@ $(function() {
                             // Implies failed request
                             $(vr_status_item[3]).removeClass('in-progress');
                             $(vr_status_item[3]).addClass('fail');
+                        }).always(function() {
+
+                            // Increment number of test
+                            test_count++;
+
+                            // Check if test is done
+                            check_if_test_is_done();
                         });
 
                     } else {
@@ -174,6 +217,25 @@ $(function() {
                         // Implies no action (because disabled)
                         $(vr_status_item[3]).removeClass('pending');
                         $(vr_status_item[3]).addClass('wont-do');
+                    }
+                }
+
+                function check_if_test_is_done() {
+
+                    // Get total number of test, decided by vr_status_item # 3
+                    let total_test = ($(vr_status_item[3]).hasClass('wont-do')) ? 3 : 4;
+
+                    if (test_count === total_test) {
+                        if (test_count === test_success) {
+
+                            // Show success message
+                            $('body > form > div:nth-child(4) > div.message.success').removeAttr('hidden');
+
+                        } else {
+
+                            // Show fail message
+                            $('body > form > div:nth-child(4) > div.message.fail').removeAttr('hidden');
+                        }
                     }
                 }
             }, 500);
