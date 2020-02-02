@@ -9,8 +9,10 @@
   - [x] Test Third-party auth server
   - [x] Count number of successful test
   - [x] Save given values to server's environment variable
-  - [ ] Print the environment variables to page, so that admin
+  - [x] Print the environment variables to page, so that admin
         can note it somewhere.
+  - [ ] Create an initial user from the given initial
+        setup.
 - [ ] Login Page
 
 
