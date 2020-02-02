@@ -228,8 +228,24 @@ $(function() {
                     if (test_count === total_test) {
                         if (test_count === test_success) {
 
+                            // Timer counter
+                            let time = 5;
+
                             // Show success message
                             $('body > form > div:nth-child(4) > div.message.success').removeAttr('hidden');
+
+                            // Pauses the script for 5 seconds
+                            setInterval(function() {
+
+                                // Submits the form once it reaches zero.
+                                if (--time === 0) form.submit();
+
+                                // Update the counter.
+                                else $('body > form > div:nth-child(4) > div.message.success > p > span:nth-child(1)').text(time);
+
+                                // Remove 's' when we reach the 1 second.
+                                if (time === 1) $('body > form > div:nth-child(4) > div.message.success > p > span:nth-child(2)').text('');
+                            }, 1000);
 
                         } else {
 
