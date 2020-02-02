@@ -1,6 +1,6 @@
 # Universal Login
 ### Checklist / Things to do
-- [ ] Setup Page
+- [x] Setup Page
   - [x] Get Root MongoDB Credentials
   - [x] Create format for third-party auth server
   - [x] Test MongoDB Connection
@@ -11,7 +11,7 @@
   - [x] Save given values to server's environment variable
   - [x] Print the environment variables to page, so that admin
         can note it somewhere.
-  - [ ] Create an initial user from the given initial
+  - [x] Create an initial user from the given initial
         setup.
 - [ ] Login Page
 
