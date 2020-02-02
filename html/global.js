@@ -275,7 +275,7 @@ $(function() {
             setup_page.text(env);
         }).fail(function() {
             // If page fails, it implies that we are not authorized to see the page.
-//            location.href = '/login'
+            location.href = '/login'
         });
     }
 });
