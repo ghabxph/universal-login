@@ -26,12 +26,13 @@ app = Flask(__name__)
 def login():
 
     # Check all essential environment variable
-    if essential_env_present() == False:
+    if not essential_env_present():
 
         # Redirects to setup page
         return redirect('/')
 
-    return ''
+    with open('/html/login.html', 'r') as html:
+        return html.read()
 
 
 @app.route('/assets')
