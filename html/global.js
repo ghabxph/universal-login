@@ -260,4 +260,22 @@ $(function() {
         if (page === 2) page_2();
         else if (page === 3) page_3();
     });
+
+    // Instantiate variables
+    setup_page = $('body.setup-done > div > pre');
+
+    // Check if setup is already done
+    if (setup_page.length === 1) {
+        $.get('/setup/get_environment', function(res) {
+            env = '';
+            console.log(res);
+            Object.entries(res.env).forEach(([key, value]) => {
+                env += key + '=' + value + '\n'
+            });
+            setup_page.text(env);
+        }).fail(function() {
+            // If page fails, it implies that we are not authorized to see the page.
+//            location.href = '/login'
+        });
+    }
 });
