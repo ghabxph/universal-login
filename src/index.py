@@ -225,7 +225,7 @@ def setup_get_environment():
 
 
 @app.route('/login', methods=['GET'])
-def login():
+def render_login():
 
     # Check all essential environment variable
     if not essential_env_present():
