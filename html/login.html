@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GhabXPH's - Universal Login - Test login page</title>
+
+    <!-- Normalize.css -->
+    <link rel="stylesheet" href="/assets?file=lib/css/normalize.min.css">
+
+    <!-- Global page style -->
+    <link rel="stylesheet" href="/assets?file=global.css">
+</head>
+<body class="minima">
+<form action="POST" id="login">
+    <!-- Page Title -->
+    <h1 class="header">Login</h1>
+
+    <!-- First page -->
+    <!-- Page that collects "database" information (mongodb credentials) -->
+    <div class="page">
+
+        <!-- Header -->
+        <h2 class="header">Simple login page</h2>
+
+        <!-- Caption -->
+        <p class="caption">
+            This is just a sample login page. You can use this as reference
+            for your implementation of login page. This page explains how to
+            use the API for login (See developer tools / press F12)
+        </p>
+
+        <!-- Inputs -->
+        <div class="inputs">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+        </div>
+
+        <!-- Next Button -->
+        <div class="next-button">
+
+            <!-- Submits the button, when user pressed it. -->
+            <button class="right">Login</button>
+
+            <!-- Just a clearfix -->
+            <div class="clearfix"></div>
+
+        </div>
+    </div>
+</form>
+<script src="/assets?file=lib/js/jquery-3.4.1.min.js"></script>
+<script src="/assets?file=global.js"></script>
+</body>
+</html>
