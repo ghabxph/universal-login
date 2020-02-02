@@ -4,8 +4,6 @@ from flask import request
 from flask import redirect
 from flask import jsonify
 from lib.util import essential_env_present
-from lib.util import set_essential_env
-from lib.util import validate_submitted_env
 from pymongo import MongoClient as mongo_client
 from pymongo.errors import ServerSelectionTimeoutError
 from pymongo.errors import OperationFailure
@@ -76,26 +74,22 @@ def set_environment():
         # Do nothing..
         return ''
 
-    # Validates submitted values
-    validation = validate_submitted_env(request.values)
-
-    # Proceed if values are valid
-    if validation['valid'] is False:
-        return jsonify(validation)
-
-    # Sets essential env setting
-    set_essential_env({
+    essential_env = {
         "UL_DB_HOST": request.values.get('UL_DB_HOST'),
-        "UL_DB_USER": request.values.get('UL_DB_USER'),
-        "UL_DB_PASS": request.values.get('UL_DB_PASS'),
-        "UL_DB_NAME": request.values.get('UL_DB_NAME'),
+        "UL_DB_ROOT_USER": request.values.get('UL_DB_ROOT_USER'),
+        "UL_DB_ROOT_PASS": request.values.get('UL_DB_ROOT_PASS'),
+        "UL_DB_NAME_PREFIX": request.values.get('UL_DB_NAME_PREFIX'),
         "UL_TP_CHECK": request.values.get('UL_TP_CHECK'),
         "UL_TP_URL": request.values.get('UL_TP_URL'),
-        "UL_TP_METHOD": request.values.get('UL_TP_METHOD'),
-        "UL_TP_USER_FIELD": request.values.get('UL_TP_USER_FIELD'),
-        "UL_TP_PASS_FIELD": request.values.get('UL_TP_PASS_FIELD'),
-        "UL_TP_OTHER_FIELDS": request.values.get('UL_TP_OTHER_FIELDS')
-    })
+        "UL_TP_REQUEST_FORMAT": request.values.get('UL_TP_REQUEST_FORMAT')
+    }
+
+    # Sets essential env setting
+    for key in essential_env:
+        if essential_env[key] is None:
+            os.environ[key] = ''
+        else:
+            os.environ[key] = essential_env[key]
 
     # Set environment from submitted form
     return 'Environment setup is done!'
