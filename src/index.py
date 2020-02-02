@@ -22,6 +22,18 @@ import sys
 app = Flask(__name__)
 
 
+@app.route('/login', methods=['GET'])
+def login():
+
+    # Check all essential environment variable
+    if essential_env_present() == False:
+
+        # Redirects to setup page
+        return redirect('/')
+
+    return ''
+
+
 @app.route('/assets')
 def assets():
     asset = '/html/%s' % request.values.get('file')
