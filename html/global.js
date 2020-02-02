@@ -283,6 +283,30 @@ $(function() {
     // Login Page Code
     function init_login_page() {
 
+        // Initialize variables
+        let username = $('#login > div > div.inputs > input[type="text"]:nth-child(1)');
+        let password = $('#login > div > div.inputs > input[type="password"]:nth-child(2)');
+
+        $('form#login').submit((e) => {
+
+            // Prevents form submission
+            e.preventDefault();
+
+            // Performs login
+            $.post('/api/v1/login', {
+                'username': username.val(),
+                'password': password.val()
+            }, (res) => {
+
+                // Opens an alert message box (temporary)
+                alert(res.msg);
+
+            }).fail((res) => {
+
+                // Opens an alert message box
+                alert(res.msg);
+            });
+        });
     }
 
     // Loads setup page if the page is "setup" page
