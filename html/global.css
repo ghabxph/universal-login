@@ -68,6 +68,10 @@
 .setup .page .message.fail p { font-style:italic }
 
 
+/** Setup Done Page **/
+.setup-done { background:#7ba0ff }
+.setup-done > div { width:600px; margin:80px auto 0 auto; padding:55px; background:#ececec; border-radius:25px }
+
 /** Helpers **/
 .clearfix { clear:both }
 .right { float:right }
