@@ -101,6 +101,19 @@ def set_environment():
         else:
             os.environ[key] = essential_env[key]
 
+    # Create a client instance (mongodb)
+    client = mongo_client(
+        host=os.environ.get('UL_DB_HOST'),
+        username=os.environ.get('UL_DB_ROOT_USER'),
+        password=os.environ.get('UL_DB_ROOT_PASS')
+    )
+
+    # Creates an initial user: admin:admin
+    # Note that this will have issue if we have third party authentication server.
+    # I will make a separate setup for this, but for now, the implementation would be
+    # just this simple. I will not handle third party auth for now...
+    client[os.environ.get('UL_DB_NAME_PREFIX') + 'ul_db'].users.insert_one({"username": "admin", "password": bcrypt.hashpw(b'admin', bcrypt.gensalt())})
+
     # Set environment from submitted form
     with open('/html/setup-done.html', 'r') as html_file:
 
