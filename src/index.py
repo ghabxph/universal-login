@@ -186,6 +186,16 @@ def setup_verify_tpauth():
 
 @app.route('/setup/get_environment', methods=['GET'])
 def setup_get_environment():
+
+    if os.environ.get('UL_ENV_SHOWN') == 'true':
+        return Response(json.dumps({
+            "type": "error",
+            "msg": "You are not authorized to view this page."
+        }), mimetype='application/json'), 403
+
+    # Mark UL_ENV_SHOWN so that server won't be allowed to show the info again.
+    os.environ['UL_ENV_SHOWN'] = 'true'
+
     return Response(json.dumps({
         "type": "success",
         "msg": "Environment variable retrieval succeed. Please look at env variable.",
