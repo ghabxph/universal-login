@@ -73,3 +73,4 @@
 /** Helpers **/
 .clearfix { clear:both }
 .right { float:right }
+.no-overflow { overflow:hidden }
