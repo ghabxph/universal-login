@@ -65,20 +65,21 @@
         <!-- Inputs -->
         <div class="inputs">
             <div class="activator">
-                <!-- Default checkbox value -->
-                <input type="hidden" name="UL_TP_CHECK" value="false"/>
 
                 <!-- Checkbox -->
                 <label><input type="checkbox" name="UL_TP_CHECK" value="true"/> Activate third party login check?</label>
+
+                <!-- Default checkbox value -->
+                <input type="hidden" name="UL_TP_CHECK" value="false"/>
             </div>
             <div class="activator-toactivate">
-                <!-- Form values, in case fields are disabled -->
-                <input type="hidden" name="UL_TP_URL"/>
-                <input type="hidden" name="UL_TP_REQUEST_FORMAT"/>
-
                 <!-- Typeable fields -->
                 <input type="text" name="UL_TP_URL" placeholder="API URL" disabled/>
                 <textarea name="UL_TP_REQUEST_FORMAT" placeholder="Request format" disabled></textarea>
+
+                <!-- Form values, in case fields are disabled -->
+                <input type="hidden" name="UL_TP_URL"/>
+                <input type="hidden" name="UL_TP_REQUEST_FORMAT"/>
             </div>
         </div>
 
