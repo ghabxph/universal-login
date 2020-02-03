@@ -302,10 +302,10 @@ $(function() {
                 // Opens an alert message box (temporary)
                 alert(res.msg);
 
-            }).fail((res) => {
+            }).fail((xhr) => {
 
                 // Opens an alert message box
-                alert(res.msg);
+                alert(xhr.responseJSON.msg);
             });
         });
     }
