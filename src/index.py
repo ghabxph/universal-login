@@ -141,8 +141,11 @@ def set_environment():
     # Creates a user dedicated for universal login only
     client[os.environ.get('UL_DB_NAME')].command("createUser", os.environ.get('UL_DB_USER'), pwd=os.environ.get('UL_DB_PASS'), roles=["readWrite"])
 
-    # Generate a private key
-    os.environ['UL_KEY'] = jwk.JWK.generate(kty='RSA', size=2048).export()
+    # Generate a symmetric key
+    # Note: I wish to use asymmetric key, but I have issues with EC or RSA.
+    # Errors: TypeError: object of type '_RSAPrivateKey' has no len() or
+    #         TypeError: object of type '_EllipticCurvePrivateKey' has no len()
+    os.environ['UL_KEY'] = jwk.JWK.generate(kty='oct', size=256).export()
 
     # Set environment from submitted form
     with open('/html/setup-done.html', 'r') as html_file:
