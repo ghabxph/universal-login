@@ -5,6 +5,7 @@ $(function() {
 
     // Setup Page Code
     function init_setup_page() {
+
         // Elements
         let form = $('body > form');
         let mg_page = $('body > form > div:nth-child(2)');
@@ -266,7 +267,7 @@ $(function() {
 
     // Setup Page Done Code
     function init_setup_done_page() {
-        let setup_page = $('body.setup-done > div > pre');
+        let setup_page = $('body.setup-done > div > div > pre');
         $.get('/setup/get_environment', function(res) {
             env = '';
             console.log(res);
@@ -311,11 +312,11 @@ $(function() {
 
     // Loads setup page if the page is "setup" page
     if ($('form#setup').length === 1) {
-        init_setup_page()
+        init_setup_page();
     }
 
     // Loads setup_done page if the page is "setup_done" page
-    if ($('body.setup-done > div > pre').length === 1) {
+    if ($('body.setup-done > div > div > pre').length === 1) {
         init_setup_done_page();
     }
 
