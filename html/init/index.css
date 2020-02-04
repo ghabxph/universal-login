@@ -1,0 +1,9 @@
+
+/** Page-wide container **/
+div.container { width:700px; margin:100px auto 0 auto }
+
+/** Panel controller **/
+ul.panel.controller { display:block; background:#5e1d61; padding:0 }
+ul.panel.controller li { display:inline-block; color:#fff; cursor:pointer; padding:15px }
+ul.panel.controller li.selected { background:#89218e }
+ul.panel.controller li:hover { background:#732277 }
