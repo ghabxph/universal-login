@@ -299,8 +299,11 @@ $(function() {
                 'password': password.val()
             }, (res) => {
 
-                // Opens an alert message box (temporary)
-                alert(res.msg);
+                // Sets the JWS to localStorage
+                localStorage.setItem('login', res.jws);
+
+                // Redirect to /init page
+                location.href = '/init';
 
             }).fail((xhr) => {
 
