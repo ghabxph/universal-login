@@ -11,6 +11,7 @@ from pymongo.errors import OperationFailure
 from requests.exceptions import ConnectionError
 from jwcrypto import jwt, jwk, jws
 from lib.mongo import db
+from controllers.init_controller import InitController
 import os
 import json
 import random
@@ -286,6 +287,11 @@ def render_login():
 
     with open('/html/login.html', 'r') as html:
         return html.read()
+
+
+@app.route('/init', methods=['GET'])
+def init():
+    return InitController().index()
 #
 #
 # @app.route('/test')
