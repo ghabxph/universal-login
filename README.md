@@ -16,4 +16,4 @@
 - [ ] /change-admin-password page
   - [ ] 2 inputs (with confirmation, client side verified)
 - [ ] /admin page
-  - [ ] 
+  - [ ] ....
