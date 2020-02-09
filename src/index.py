@@ -20,11 +20,6 @@ def test():
     })
 
 
-@app.route('/api/v1/login', methods=['POST'])
-def login():
-    return LoginController.post()
-
-
 @app.route('/assets')
 def assets():
     return AssetsController.get()
@@ -74,6 +69,18 @@ def render_login():
 @app.route('/init', methods=['GET'])
 def init():
     return InitController().index()
+
+
+# All api/v1 routes
+
+
+@app.route('/api/v1/login', methods=['POST'])
+def login():
+    return LoginController.post()
+
+
+# -----------------------------------------
+
 #
 #
 # @app.route('/test')
