@@ -5,7 +5,7 @@ import json
 import bcrypt
 
 
-class TokenController:
+class AdminController:
 
     @staticmethod
     def generate_new_token():
@@ -15,11 +15,11 @@ class TokenController:
         """
         token = random_str(32)
 
-        if os.environ.get('ADMIN_TOKEN') is None:
-            os.environ['ADMIN_TOKEN'] = bcrypt.hashpw(token.encode('utf-8'), bcrypt.gensalt)
+        os.environ['ADMIN_TOKEN'] = str(bcrypt.hashpw(token.encode('utf-8'), bcrypt.gensalt()).decode())
 
         return Response(json.dumps({
             "type": "success",
-            "msg": "Token has been generated successfully. Please do not lose this token, as we only store the hash in the server.",
+            "msg": "Token has been generated successfully. Please do not lose this token, as we only store the hash "
+                   "in the server.",
             "token": token
         })), 200
