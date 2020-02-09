@@ -21,9 +21,6 @@ $(() => {
 
         // Run function based on link's text
         switch($(el.target).text()) {
-            case 'Show token':
-                show_token();
-                break;
             case 'Generate new token':
                 generate_new_token();
                 break;
@@ -50,24 +47,10 @@ $(() => {
         })
     });
 
-    function show_token() {
-        $.ajax({
-            url: '/api/v1/admin/token',
-            type: 'GET',
-            success: (res) => {
-                $('.panel.body .admin-token').text(res);
-                $('.panel.body .server-msg').text(res.msg);
-            }
-        }).fail((xhr) => {
-            $('.panel.body .admin-token').text(xhr.responseText);
-            $('.panel.body .server-msg').text(res.msg);
-        });
-    }
-
     function generate_new_token() {
         $.ajax({
             url: '/api/v1/admin/token',
-            type: 'PUT',
+            type: 'POST',
             success: (res) => {
                 $('.panel.body .admin-token').text(res);
                 $('.panel.body .server-msg').text(res.msg);
