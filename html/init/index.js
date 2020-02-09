@@ -34,8 +34,8 @@ $(() => {
 
         // Dddd
         $.post('/api/v1/manage_other_instance', {
-            'server_url': $(el.target).find('input[name="server_url"]').val(),
-            'secret_admin_key': $(el.target).find('input[name="secret_admin_key"]').val()
+            'url': $(el.target).find('input[name="url"]').val(),
+            'key': $(el.target).find('input[name="key"]').val()
         }, (res) => {
 
             // Shows server response to console (temporary)
