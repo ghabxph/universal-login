@@ -1,5 +1,7 @@
+from lib.util import essential_env_present
 from flask import request
 from flask import Response
+from flask import redirect
 from jwcrypto import jwt
 from jwcrypto import jwk
 from lib.mongo import db
@@ -31,3 +33,13 @@ class LoginController:
                 return Response(json.dumps({"msg": "Login success.", "jws": token.serialize()}),
                                 mimetype='application/json'), 200
         return Response(json.dumps({"msg": "Invalid username and/or password"}), mimetype='application/json'), 403
+
+    @staticmethod
+    def render_login():
+        # Check all essential environment variable
+        if not essential_env_present():
+            # Redirects to setup page
+            return redirect('/')
+
+        with open('/html/login.html', 'r') as html:
+            return html.read()
