@@ -1,9 +1,36 @@
 
 /** Page-wide container **/
-div.container { width:700px; margin:100px auto 0 auto }
+div.container { width:500px; margin:100px auto }
+
 
 /** Panel controller **/
 ul.panel.controller { display:block; background:#5e1d61; padding:0 }
 ul.panel.controller li { display:inline-block; color:#fff; cursor:pointer; padding:15px }
 ul.panel.controller li.selected { background:#89218e }
 ul.panel.controller li:hover { background:#732277 }
+
+
+/** Panel body form inputs **/
+div.panel.body form input[type=text],
+div.panel.body form input[type=password]
+{ display:block; width:476px; padding:10px; margin:0 0 10px 0; border:1px solid #d0d0d0 }
+
+div.panel.body form input[type=text]::placeholder,
+div.panel.body form input[type=password]::placeholder
+{ color:#bdbdbd }
+
+/** Panel body button element **/
+div.panel.body form button { display:inline-block; background:none; cursor:pointer; padding:10px; border-radius:5px; border:1px solid #6d6d6d; color:#6d6d6d; text-decoration:none }
+
+/** Panel body button element (on hover) **/
+div.panel.body form button:hover { border:1px solid #383838; color:#383838 }
+
+
+/** Panel body admin token style **/
+div.panel.body pre.admin-token { white-space:pre-wrap; word-wrap:break-word }
+
+
+/** Helpers **/
+.clearfix { clear:both }
+.right { float:right }
+.no-overflow { overflow:hidden }
