@@ -21,32 +21,47 @@
 -->
 
 <div class="container">
+
+    <h1>Setting up Universal Login</h1>
     <!-- Panel controller -->
     <ul class="panel controller">
-        <li class="selected">Manage other instance</li>
-        <li class="">Get admin token</li>
+        <li data-for="manage-other-instance" class="selected">Manage other instance</li>
+        <li data-for="get-admin-token" class="">Get admin token</li>
     </ul>
 
     <!-- Panel: Manage other instance -->
-    <div class="panel body">
+    <div data-panel-name="manage-other-instance" class="panel body">
 
         <!-- Panel title -->
-        <h1>Manage other instance</h1>
+        <h2>Manage other instance</h2>
+
+        <form method="POST">
+            <input type="text" name="server_url" placeholder="Server URL">
+            <input type="password" name="secret_admin_key" placeholder="Secret admin key">
+            <button class="right">Manage</button>
+            <div class="clearfix"></div>
+        </form>
     </div>
 
     <!-- Panel: Get admin token-->
-    <div class="panel body">
+    <div data-panel-name="get-admin-token" class="panel body" hidden>
 
         <!-- Panel title -->
-        <h1>Get admin token</h1>
+        <h2>Get admin token</h2>
+        <a href="#">Show token</a> | <a href="#">Generate new token</a>
+
+        <!-- Admin token -->
+        <pre class="admin-token">Basic Guide:<br/><br/>Press "Show token" to show the admin token.<br/>Press "Generate new token" to generate new admin token.</pre>
+
+        <!-- Server message -->
+        <p class="server-msg"></p>
     </div>
-    <a href="#">Show token</a> | <a href="#">Generate new token</a>
 </div>
 
 <!-- JQuery -->
 <script src="/assets?file=lib/js/jquery-3.4.1.min.js"></script>
 
 <!-- Javascript Code for this page -->
-<script src="/assets?file=lib/index.js"></script>
+<script src="/assets?file=init/index.js"></script>
 </body>
 </html>
