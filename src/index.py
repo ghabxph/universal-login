@@ -4,24 +4,14 @@ from flask import request
 from flask import redirect
 from flask import jsonify
 from lib.util import essential_env_present
-from lib.util import random_str
-from pymongo import MongoClient as mongo_client
-from pymongo.errors import ServerSelectionTimeoutError
-from pymongo.errors import OperationFailure
-from requests.exceptions import ConnectionError
 from jwcrypto import jwt, jwk, jws
-from lib.mongo import db
 from controllers.api.v1.login_controller import LoginController
 from controllers.assets_controller import AssetsController
 from controllers.init_controller import InitController
 from controllers.mongo_setup_controller import MongoSetupController
 import os
 import json
-import random
 import requests
-import bcrypt
-import time
-import sys
 
 # Essential Instances
 app = Flask(__name__)
