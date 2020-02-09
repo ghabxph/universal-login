@@ -10,6 +10,7 @@ from jwcrypto import jwk
 import os
 import bcrypt
 import json
+import requests
 
 
 class MongoSetupController:
