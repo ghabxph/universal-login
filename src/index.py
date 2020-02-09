@@ -5,7 +5,7 @@ from controllers.api.v1.login_controller import LoginController
 from controllers.assets_controller import AssetsController
 from controllers.init_controller import InitController
 from controllers.mongo_setup_controller import MongoSetupController
-from controllers.api.v1.admin.token_controller import TokenController as admin_token
+from controllers.api.v1.admin_controller import AdminController
 import json
 
 # Essential Instances
@@ -79,9 +79,10 @@ def init():
 def login():
     return LoginController.post()
 
+
 @app.route('/api/v1/admin/token', methods=['POST'])
 def generate_new_token():
-    return admin_token.generate_new_token()
+    return AdminController.generate_new_token()
 
 # -----------------------------------------
 
