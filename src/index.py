@@ -1,17 +1,11 @@
 from flask import Flask
-from flask import Response
-from flask import request
-from flask import redirect
 from flask import jsonify
-from lib.util import essential_env_present
 from jwcrypto import jwt, jwk, jws
 from controllers.api.v1.login_controller import LoginController
 from controllers.assets_controller import AssetsController
 from controllers.init_controller import InitController
 from controllers.mongo_setup_controller import MongoSetupController
-import os
 import json
-import requests
 
 # Essential Instances
 app = Flask(__name__)
@@ -64,70 +58,17 @@ def setup_verify_mongodbadminpower():
 
 @app.route('/setup/verify/third_party_auth', methods=['POST'])
 def setup_verify_tpauth():
-    if request.values.get('UL_TP_REQUEST_FORMAT') is None or request.values.get('UL_TP_REQUEST_FORMAT') == '':
-        data = {
-            'username': '$username',
-            'password': '$password'
-        }
-    else:
-        data = json.loads(request.values.get('UL_TP_REQUEST_FORMAT'))
-
-    try:
-        res = requests.post(request.values.get('UL_TP_URL'), data=data)
-        return Response(json.dumps({
-            "type": "success",
-            "msg": "Request has been successfully posted.",
-            "res.text": res.text
-        })), 200
-    except:
-        return Response(json.dumps({
-            "type": "error",
-            "msg": "Connection error. Host either unresolvable, or cannot be reach."
-        })), 403
+    return MongoSetupController.setup_verify_mongodb()
 
 
 @app.route('/setup/get_environment', methods=['GET'])
 def setup_get_environment():
-
-    if os.environ.get('UL_ENV_SHOWN') == 'true':
-        return Response(json.dumps({
-            "type": "error",
-            "msg": "You are not authorized to view this page."
-        }), mimetype='application/json'), 403
-
-    # Mark UL_ENV_SHOWN so that server won't be allowed to show the info again.
-    os.environ['UL_ENV_SHOWN'] = 'true'
-
-    return Response(json.dumps({
-        "type": "success",
-        "msg": "Environment variable retrieval succeed. Please look at env variable.",
-        "env": {
-            "UL_KEY": os.environ.get('UL_KEY'),
-            "UL_DB_HOST": os.environ.get('UL_DB_HOST'),
-            "UL_DB_ROOT_USER": os.environ.get('UL_DB_ROOT_USER'),
-            "UL_DB_ROOT_PASS": os.environ.get('UL_DB_ROOT_PASS'),
-            "UL_DB_NAME_PREFIX": os.environ.get('UL_DB_NAME_PREFIX'),
-            "UL_DB_USER": os.environ.get('UL_DB_USER'),
-            "UL_DB_PASS": os.environ.get('UL_DB_PASS'),
-            "UL_DB_NAME": os.environ.get('UL_DB_NAME'),
-            "UL_TP_CHECK": os.environ.get('UL_TP_CHECK'),
-            "UL_TP_URL": os.environ.get('UL_TP_URL'),
-            "UL_TP_REQUEST_FORMAT": os.environ.get('UL_TP_REQUEST_FORMAT')
-        }
-    }), mimetype='application/json'), 200
+    return MongoSetupController.setup_get_environment()
 
 
 @app.route('/login', methods=['GET'])
 def render_login():
-
-    # Check all essential environment variable
-    if not essential_env_present():
-
-        # Redirects to setup page
-        return redirect('/')
-
-    with open('/html/login.html', 'r') as html:
-        return html.read()
+    return LoginController.render_login()
 
 
 @app.route('/init', methods=['GET'])
