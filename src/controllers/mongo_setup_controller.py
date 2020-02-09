@@ -153,3 +153,55 @@ class MongoSetupController:
                 "type": "success",
                 "msg": "rolesInfo command failed. We assume that user doesn't have root privilege."
             }), mimetype='application/json'), 403
+
+    @staticmethod
+    def setup_verify_tpauth():
+        if request.values.get('UL_TP_REQUEST_FORMAT') is None or request.values.get('UL_TP_REQUEST_FORMAT') == '':
+            data = {
+                'username': '$username',
+                'password': '$password'
+            }
+        else:
+            data = json.loads(request.values.get('UL_TP_REQUEST_FORMAT'))
+
+        try:
+            res = requests.post(request.values.get('UL_TP_URL'), data=data)
+            return Response(json.dumps({
+                "type": "success",
+                "msg": "Request has been successfully posted.",
+                "res.text": res.text
+            })), 200
+        except:
+            return Response(json.dumps({
+                "type": "error",
+                "msg": "Connection error. Host either unresolvable, or cannot be reach."
+            })),
+
+    @staticmethod
+    def setup_get_environment():
+        if os.environ.get('UL_ENV_SHOWN') == 'true':
+            return Response(json.dumps({
+                "type": "error",
+                "msg": "You are not authorized to view this page."
+            }), mimetype='application/json'), 403
+
+        # Mark UL_ENV_SHOWN so that server won't be allowed to show the info again.
+        os.environ['UL_ENV_SHOWN'] = 'true'
+
+        return Response(json.dumps({
+            "type": "success",
+            "msg": "Environment variable retrieval succeed. Please look at env variable.",
+            "env": {
+                "UL_KEY": os.environ.get('UL_KEY'),
+                "UL_DB_HOST": os.environ.get('UL_DB_HOST'),
+                "UL_DB_ROOT_USER": os.environ.get('UL_DB_ROOT_USER'),
+                "UL_DB_ROOT_PASS": os.environ.get('UL_DB_ROOT_PASS'),
+                "UL_DB_NAME_PREFIX": os.environ.get('UL_DB_NAME_PREFIX'),
+                "UL_DB_USER": os.environ.get('UL_DB_USER'),
+                "UL_DB_PASS": os.environ.get('UL_DB_PASS'),
+                "UL_DB_NAME": os.environ.get('UL_DB_NAME'),
+                "UL_TP_CHECK": os.environ.get('UL_TP_CHECK'),
+                "UL_TP_URL": os.environ.get('UL_TP_URL'),
+                "UL_TP_REQUEST_FORMAT": os.environ.get('UL_TP_REQUEST_FORMAT')
+            }
+        }), mimetype='application/json'), 200
