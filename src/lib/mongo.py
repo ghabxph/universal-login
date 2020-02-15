@@ -1,5 +1,5 @@
 from pymongo import MongoClient as mongo_client
-import os
+from lib.util import config
 
 
 class Mongo:
@@ -9,15 +9,15 @@ class Mongo:
     @staticmethod
     def conn():
         if Mongo.__conn__ is None:
-            conn = mongo_client(host=os.environ.get('UL_DB_HOST'))
-            conn[os.environ.get('UL_DB_NAME')].authenticate(name=os.environ.get('UL_DB_USER'), password=os.environ.get('UL_DB_PASS'))
+            conn = mongo_client(host=config('UL_DB_HOST'))
+            conn[config('UL_DB_NAME')].authenticate(name=config('UL_DB_USER'), password=config('UL_DB_PASS'))
             Mongo.__conn__ = conn
 
         return Mongo.__conn__
 
     @staticmethod
     def db():
-        return Mongo.conn()[os.environ.get('UL_DB_NAME')]
+        return Mongo.conn()[config('UL_DB_NAME')]
 
 
 def mongo():
