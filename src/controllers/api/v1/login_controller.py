@@ -5,10 +5,10 @@ from flask import redirect
 from jwcrypto import jwt
 from jwcrypto import jwk
 from lib.mongo import db
+from lib.util import config
 import bcrypt
 import time
 import json
-import os
 
 
 class LoginController:
@@ -28,8 +28,7 @@ class LoginController:
                     'iat': int(time.time()),
                     'exp': int(time.time() + 900)
                 })
-                # token.make_signed_token(os.environ.get('UL_KEY'))
-                token.make_signed_token(jwk.JWK(**json.loads(os.environ.get('UL_KEY'))))
+                token.make_signed_token(jwk.JWK(**json.loads(config('UL_KEY'))))
                 return Response(json.dumps({"msg": "Login success.", "jws": token.serialize()}),
                                 mimetype='application/json'), 200
         return Response(json.dumps({"msg": "Invalid username and/or password"}), mimetype='application/json'), 403
