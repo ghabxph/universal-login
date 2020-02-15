@@ -5,15 +5,26 @@ services:
     build: .
     restart: unless-stopped
     ports:
-      - 3001:80
+      - 3001:1080
     volumes:
       - ./src:/app
       - ./html:/html
+
+  svc-manager:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 3011:1080
+    volumes:
+      - ./src:/app
+      - ./html:/html
+
   svc-nosql:
     image: 'mongo:4.2.3-bionic'
     environment:
       - MONGO_INITDB_ROOT_PASSWORD=root
       - MONGO_INITDB_ROOT_USERNAME=root
+
   svc-nosql-express:
     image: mongo-express
     ports:
