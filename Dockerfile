@@ -1,4 +1,4 @@
-FROM ghabxph/python-common:0.0.1
+FROM ghabxph/python-common:0.0.2
 
 # Copy project source code
 COPY src /app
