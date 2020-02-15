@@ -32,18 +32,20 @@ $(() => {
         // Prevent form from submitting.
         el.preventDefault();
 
-        // Dddd
-        $.post('/api/v1/manage_other_instance', {
+        // Attempts to login
+        $.post('/api/v1/admin/manage', {
             'url': $(el.target).find('input[name="url"]').val(),
             'key': $(el.target).find('input[name="key"]').val()
         }, (res) => {
 
-            // Shows server response to console (temporary)
             console.log(res)
+//
+//            // Redirect to what route server instructs.
+//            location.href = res.redirect;
         }).fail((xhr) => {
 
-            // Prints error to console
-            console.log(xhr.responseText);
+            // Alerts the error
+            alert(xhr.responseJSON.msg);
         })
     });
 
