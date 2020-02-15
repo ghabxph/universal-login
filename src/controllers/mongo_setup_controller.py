@@ -3,11 +3,11 @@ from flask import redirect
 from flask import Response
 from lib.util import essential_env_present
 from lib.util import random_str
+from lib.util import config
 from pymongo import MongoClient as mongo_client
 from pymongo.errors import ServerSelectionTimeoutError
 from pymongo.errors import OperationFailure
 from jwcrypto import jwk
-import os
 import bcrypt
 import json
 import requests
@@ -50,40 +50,40 @@ class MongoSetupController:
         # Sets essential env setting
         for key in essential_env:
             if essential_env[key] is None:
-                os.environ[key] = ''
+                config(key, '')
             else:
-                os.environ[key] = essential_env[key]
+                config(key, essential_env[key])
 
         # Create a client instance (mongodb)
         client = mongo_client(
-            host=os.environ.get('UL_DB_HOST'),
-            username=os.environ.get('UL_DB_ROOT_USER'),
-            password=os.environ.get('UL_DB_ROOT_PASS')
+            host=config('UL_DB_HOST'),
+            username=config('UL_DB_ROOT_USER'),
+            password=config('UL_DB_ROOT_PASS')
         )
 
         # Assigns database name from prefix
-        os.environ['UL_DB_NAME'] = os.environ.get('UL_DB_NAME_PREFIX') + 'ul_db'
+        config('UL_DB_NAME', config('UL_DB_NAME_PREFIX') + 'ul_db')
 
         # Creates an initial user: admin:admin
         # Note that this will have issue if we have third party authentication server.
         # I will make a separate setup for this, but for now, the implementation would be
         # just this simple. I will not handle third party auth for now...
-        client[os.environ.get('UL_DB_NAME')].users.insert_one(
+        client[config('UL_DB_NAME')].users.insert_one(
             {"username": "admin", "password": bcrypt.hashpw(b'admin', bcrypt.gensalt())})
 
         # Assign a random username and password for universal login user account
-        os.environ['UL_DB_USER'] = 'ul_user_' + random_str(5)
-        os.environ['UL_DB_PASS'] = random_str(16)
+        config('UL_DB_USER', 'ul_user_' + random_str(5))
+        config('UL_DB_PASS', random_str(16))
 
         # Creates a user dedicated for universal login only
-        client[os.environ.get('UL_DB_NAME')].command("createUser", os.environ.get('UL_DB_USER'),
-                                                     pwd=os.environ.get('UL_DB_PASS'), roles=["readWrite"])
+        client[config('UL_DB_NAME')].command("createUser", config('UL_DB_USER'),
+                                                     pwd=config('UL_DB_PASS'), roles=["readWrite"])
 
         # Generate a symmetric key
         # Note: I wish to use asymmetric key, but I have issues with EC or RSA.
         # Errors: TypeError: object of type '_RSAPrivateKey' has no len() or
         #         TypeError: object of type '_EllipticCurvePrivateKey' has no len()
-        os.environ['UL_KEY'] = jwk.JWK.generate(kty='oct', size=256).export()
+        config('UL_KEY', jwk.JWK.generate(kty='oct', size=256).export())
 
         # Set environment from submitted form
         with open('/html/setup-done.html', 'r') as html_file:
@@ -180,29 +180,29 @@ class MongoSetupController:
 
     @staticmethod
     def setup_get_environment():
-        if os.environ.get('UL_ENV_SHOWN') == 'true':
+        if config('UL_ENV_SHOWN') == 'true':
             return Response(json.dumps({
                 "type": "error",
                 "msg": "You are not authorized to view this page."
             }), mimetype='application/json'), 403
 
         # Mark UL_ENV_SHOWN so that server won't be allowed to show the info again.
-        os.environ['UL_ENV_SHOWN'] = 'true'
+        config('UL_ENV_SHOWN', 'true')
 
         return Response(json.dumps({
             "type": "success",
             "msg": "Environment variable retrieval succeed. Please look at env variable.",
             "env": {
-                "UL_KEY": os.environ.get('UL_KEY'),
-                "UL_DB_HOST": os.environ.get('UL_DB_HOST'),
-                "UL_DB_ROOT_USER": os.environ.get('UL_DB_ROOT_USER'),
-                "UL_DB_ROOT_PASS": os.environ.get('UL_DB_ROOT_PASS'),
-                "UL_DB_NAME_PREFIX": os.environ.get('UL_DB_NAME_PREFIX'),
-                "UL_DB_USER": os.environ.get('UL_DB_USER'),
-                "UL_DB_PASS": os.environ.get('UL_DB_PASS'),
-                "UL_DB_NAME": os.environ.get('UL_DB_NAME'),
-                "UL_TP_CHECK": os.environ.get('UL_TP_CHECK'),
-                "UL_TP_URL": os.environ.get('UL_TP_URL'),
-                "UL_TP_REQUEST_FORMAT": os.environ.get('UL_TP_REQUEST_FORMAT')
+                "UL_KEY": config('UL_KEY'),
+                "UL_DB_HOST": config('UL_DB_HOST'),
+                "UL_DB_ROOT_USER": config('UL_DB_ROOT_USER'),
+                "UL_DB_ROOT_PASS": config('UL_DB_ROOT_PASS'),
+                "UL_DB_NAME_PREFIX": config('UL_DB_NAME_PREFIX'),
+                "UL_DB_USER": config('UL_DB_USER'),
+                "UL_DB_PASS": config('UL_DB_PASS'),
+                "UL_DB_NAME": config('UL_DB_NAME'),
+                "UL_TP_CHECK": config('UL_TP_CHECK'),
+                "UL_TP_URL": config('UL_TP_URL'),
+                "UL_TP_REQUEST_FORMAT": config('UL_TP_REQUEST_FORMAT')
             }
         }), mimetype='application/json'), 200
