@@ -1,11 +1,15 @@
 from flask import Flask
 from flask import jsonify
+from flask import redirect
 from jwcrypto import jwt, jwk, jws
 from controllers.api.v1.login_controller import LoginController
 from controllers.assets_controller import AssetsController
 from controllers.init_controller import InitController
 from controllers.mongo_setup_controller import MongoSetupController
 from controllers.api.v1.admin_controller import AdminController
+from controllers.manage_controller import ManageController
+from lib.util import init_is_locked
+from lib.util import config
 import json
 
 # Essential Instances
@@ -69,12 +73,18 @@ def render_login():
 
 @app.route('/init', methods=['GET'])
 def init():
+    if (config('UL_LOCK_INIT')) is not None:
+        return redirect('/manage')
+
     return InitController().index()
 
 
-# All api/v1 routes
+@app.route('/manage')
+def manage():
+    return ManageController.manage()
 
 
+# All api/v1 routes --------------------------------------------------
 @app.route('/api/v1/login', methods=['POST'])
 def login():
     return LoginController.post()
@@ -82,16 +92,30 @@ def login():
 
 @app.route('/api/v1/admin/token', methods=['POST'])
 def generate_new_token():
+    if (config('UL_LOCK_INIT')) is not None:
+        return init_is_locked()
     return AdminController.generate_new_token()
 
-# -----------------------------------------
+
+@app.route('/api/v1/admin/manage', methods=['POST'])
+def manage_other_instance():
+    if (config('UL_LOCK_INIT')) is not None:
+        return init_is_locked()
+    return AdminController.manage_other_instance()
+
+
+@app.route('/api/v1/admin/login', methods=['POST'])
+def admin_login():
+    return AdminController.admin_login()
+# --------------------------------------------------------------------
+
 
 #
 #
 # @app.route('/test')
 # def test():
 #     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-#     username = 'ul_user_' + ''.join(random.choice(alphabet) for i in range(5))
+#     username = 'ul_user_' + ''.joirandom.choice(alphabet) for i in range(5))
 #     password = ''.join(random.choice(alphabet) for i in range(16))
 #     client = mongo_client(
 #         host='svc-nosql',
