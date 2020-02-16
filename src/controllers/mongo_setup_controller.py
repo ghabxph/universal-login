@@ -107,7 +107,7 @@ class MongoSetupController:
                 "type": "success",
                 "msg": "Connection to mongodb host is successful.",
                 "server_info": client.server_info()
-            }, indent=4), mimetype='application/json'), 200
+            }), mimetype='application/json'), 200
         except ServerSelectionTimeoutError:
             return Response(
                 '{"type":"error", "msg":"Unable to connect to mongodb host. Are you sure that the hostname is reachable?"}',
