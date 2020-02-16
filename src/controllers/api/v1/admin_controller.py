@@ -46,7 +46,7 @@ class AdminController:
             return Response(json.dumps({
                 "type": "error",
                 "msg": "Login to other instance did not succeed."
-            }), mimetype='application/json')
+            }), mimetype='application/json'), 403
 
         # Locks /init route
         config('UL_LOCK_INIT', 'true')
