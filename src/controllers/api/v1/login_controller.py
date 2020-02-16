@@ -29,8 +29,11 @@ class LoginController:
                     'exp': int(time.time() + 900)
                 })
                 token.make_signed_token(jwk.JWK(**json.loads(config('UL_KEY'))))
-                return Response(json.dumps({"msg": "Login success.", "jws": token.serialize()}),
-                                mimetype='application/json'), 200
+                return Response(json.dumps({
+                    "type": "success",
+                    "msg": "Login success.",
+                    "jws": token.serialize()
+                }), mimetype='application/json'), 200
         return Response(json.dumps({"msg": "Invalid username and/or password"}), mimetype='application/json'), 403
 
     @staticmethod
