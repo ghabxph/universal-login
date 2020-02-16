@@ -35,9 +35,9 @@ def setup():
     return MongoSetupController.get()
 
 
-# @status: Under development
+# @status: To be deprecated
 @app.route('/', methods=['POST'])
-def set_environment():
+def set_environment_old():
     return MongoSetupController.set_environment()
 
 
@@ -85,6 +85,11 @@ def manage():
 
 
 # All api/v1 routes --------------------------------------------------
+@app.route('/api/v1/environment', methods=['POST'])
+def set_environment():
+    return MongoSetupController.set_environment_new()
+
+
 @app.route('/api/v1/login', methods=['POST'])
 def login():
     return LoginController.post()
